@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PolygonsModel;
+use Illuminate\Support\Facades\Storage; // For file handling
 
 class PolygonsController extends Controller
 {
@@ -11,7 +12,7 @@ class PolygonsController extends Controller
 
     public function __construct()
     {
-        $this->polygon = new PolygonsModel(); // Pastikan nama model sesuai
+        $this->polygon = new PolygonsModel(); // Ensure model name matches
     }
 
     /**
@@ -19,12 +20,13 @@ class PolygonsController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi request
+        // Validate request
         $request->validate(
             [
                 'name' => 'required|unique:polygons,name',
                 'description' => 'required',
                 'geom_polygon' => 'required',
+                'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ],
             [
                 'name.required' => 'Name is required',
@@ -34,29 +36,45 @@ class PolygonsController extends Controller
             ]
         );
 
+        // Create 'images' directory if it doesn't exist
+        if (!is_dir(public_path('storage/images'))) {
+            mkdir(public_path('storage/images'), 0777, true); // Ensure 'storage/images' exists
+        }
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name_image = time() . "_polygon." . strtolower($image->getClientOriginalExtension());
+
+            // Store image using Storage facade
+            $image->storeAs('images', $name_image, 'public');
+        } else {
+            $name_image = null;
+        }
+
+        // Prepare data for insertion
         $data = [
             'geom' => $request->geom_polygon,
             'name' => $request->name,
             'description' => $request->description,
+            'image' => $name_image,
         ];
 
-        // Perbaiki bagian ini: gunakan `$this->polygon`
-        if (!$this->polygon->create($data)) {
+        // Create data in the database
+        try {
+            $this->polygon->create($data);
+            return redirect()->route('map')->with('success', 'Polygon has been added');
+        } catch (\Exception $e) {
             return redirect()->route('map')->with('error', 'Polygon failed to add');
         }
-
-        return redirect()->route('map')->with('success', 'Polygon has been added');
     }
-
-
-
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        // Implement this if needed
     }
 
     /**
@@ -64,7 +82,7 @@ class PolygonsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Implement this if needed
     }
 
     /**
@@ -72,7 +90,7 @@ class PolygonsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // Implement this if needed
     }
 
     /**
@@ -80,6 +98,6 @@ class PolygonsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Implement this if needed
     }
 }

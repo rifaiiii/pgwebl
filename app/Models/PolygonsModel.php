@@ -18,7 +18,7 @@ class PolygonsModel extends Model
             ST_Area(geom, true) AS area_m2,
             ST_Area(geom, true) / 1000000 AS area_km2,
             ST_Area(geom, true) / 10000 AS area_hektar,
-            created_at,
+            created_at,image,
             updated_at'))
             ->get();
 
@@ -36,6 +36,7 @@ class PolygonsModel extends Model
                     'description' => $p->description,
                     'area_m2' => $p->area_m2,
                     'area_km' => $p->area_km,
+                    'image'=> $p->image,
                     'area_hektar' => $p->area_hektar,
                     'created_at' => $p->created_at,
                     'updated_at' => $p->updated_at,
