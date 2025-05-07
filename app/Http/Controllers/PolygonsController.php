@@ -51,7 +51,7 @@ class PolygonsController extends Controller
 
         // Check if directory exists, if not create it
         if (!is_dir('storage/images')) {
-            mkdir('./storage/images', 0777);
+            mkdir('./storage/images', 0777, true);
         }
 
         // Check if file is uploaded
