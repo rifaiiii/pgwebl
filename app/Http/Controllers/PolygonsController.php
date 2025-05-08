@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PolygonsModel;
+use App\Models\Polygons;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage; // For file handling
 
 class PolygonsController extends Controller
 {
-    protected $polygon;
+    protected $polygons;
 
     public function __construct()
     {
-        $this->polygon = new PolygonsModel(); // Ensure model name matches
+        $this->polygons = new PolygonsModel(); // Ensure model name matches
     }
 
     /**
@@ -98,6 +100,18 @@ class PolygonsController extends Controller
      */
     public function destroy(string $id)
     {
-        // Implement this if needed
+        $imagefile = $this->polygons->find($id)->image;
+
+        if (!$this->polygons->destroy($id)) {
+            return redirect()->route('map')->with('error', 'Polygon failed to delete');
+        }
+
+        // Delete image file
+        if($imagefile != null){
+            if (File::exists('./storage/images/' . $imagefile)) {
+                unlink('./storage/images/' . $imagefile);
+            }
+        }
+        return redirect()->route('map')->with('success', 'Polygon has been deleted');
     }
 }

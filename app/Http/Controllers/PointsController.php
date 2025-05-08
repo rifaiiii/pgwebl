@@ -58,7 +58,7 @@ class PointsController extends Controller
 
         // Create 'images' directory if it doesn't exist
         if (!is_dir(public_path('storage/images'))) {
-            mkdir(public_path('storage/images'), 0777, true);  // Ensure 'storage/images' exists
+            mkdir(public_path('storage/images'), 0777, true);
         }
 
         // Handle image upload
@@ -118,6 +118,18 @@ class PointsController extends Controller
      */
     public function destroy(string $id)
     {
-        // You can implement this if needed.
+        $imagefile = $this->points->find($id)->image;
+
+        if (!$this->points->destroy($id)) {
+            return redirect()->route('map')->with('error', 'Point failed to delete');
+        }
+
+        // Delete image file
+        if($imagefile != null){
+            if (File::exists('./storage/images/' . $imagefile)) {
+                unlink('./storage/images/' . $imagefile);
+            }
+        }
+        return redirect()->route('map')->with('success', 'Point has been deleted');
     }
 }

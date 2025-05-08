@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\PolylinesModel;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage; // For file handling
 
 class PolylinesController extends Controller
@@ -117,6 +118,18 @@ class PolylinesController extends Controller
      */
     public function destroy(string $id)
     {
-        // Implement this if needed
+        $imagefile = $this->polylines->find($id)->image;
+
+        if (!$this->polylines->destroy($id)) {
+            return redirect()->route('map')->with('error', 'Polyline failed to delete');
+        }
+
+        // Delete image file
+        if($imagefile != null){
+            if (File::exists('./storage/images/' . $imagefile)) {
+                unlink('./storage/images/' . $imagefile);
+            }
+        }
+        return redirect()->route('map')->with('success', 'Polyline has been deleted');
     }
 }

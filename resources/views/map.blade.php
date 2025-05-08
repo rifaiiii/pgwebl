@@ -91,17 +91,16 @@
                         </div>
 
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-
                     <div class="mb-3">
                         <label for="image" class="form-label">Photo</label>
                         <input type="file" class="form-control" id="image_polyline" name="image"
                             onchange="document.getElementById('preview-image-polyline').src = window.URL.createObjectURL(this.files[0])">
                         <img src="" alt="" id="preview-image-polyline" class="img-thumbnail"
                             width="800">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
                 </form>
             </div>
@@ -139,18 +138,16 @@
                         </div>
 
                     </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="image_polygon" name="image"
+                            onchange="document.getElementById('preview-image-polygon').src = window.URL.
+                        createObjectURL(this.files[0])">
+                        <img src="" alt="" id="preview-image-po" class="img-thumbnail" width="400">
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Photo</label>
-                        <input type="file" class="form-control" id="image_point" name="image"
-                            onchange="document.getElementById('preview-image-point').src = window.URL.
-                        createObjectURL(this.files[0])">
-                        <img src="" alt="" id="preview-image-point" class="img-thumbnail"
-                            width="400">
                     </div>
                 </form>
             </div>
@@ -248,12 +245,19 @@
                 });
             },
             onEachFeature: function(feature, layer) {
+                var routedelete = "{{ route('points.destroy', ':id') }}";
+                routedelete = routedelete.replace(':id', feature.properties.id);
+
                 var popupContent = "Nama: " + feature.properties.name + "<br>" +
                     "Deskripsi: " + feature.properties.description + "<br>" +
                     "Dibuat: " + feature.properties.created_at + "<br>" +
                     "<img src='{{ asset('storage/images/') }}/" + feature.properties.image +
-                    "' width='250' alt=''>";
-                    layer.on({
+                    "' width='250' alt=''>" + "<br>" +
+                    "<form method='POST' action='" + routedelete + "'>" +
+                    '@csrf' + '@method('DELETE')' +
+                    "<button type='submit' class='btn btn-sm btn-danger' on click='return confirm(`Tenan Meh Dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "</form>";
+                layer.on({
                     click: function(e) {
                         point.bindPopup(popupContent);
                     },
@@ -280,12 +284,20 @@
                 };
             },
             onEachFeature: function(feature, layer) {
+                var routedelete = "{{ route('polylines.destroy', ':id') }}";
+                routedelete = routedelete.replace(':id', feature.properties.id);
+
                 var popupContent = "Nama: " + feature.properties.name + "<br>" +
                     "Deskripsi: " + feature.properties.description + "<br>" +
                     "Panjang: " + feature.properties.length_km + " meter<br>" +
                     "Dibuat: " + feature.properties.created_at + "<br>" +
                     "<img src='{{ asset('storage/images/') }}/" + feature.properties.image +
-                    "' width='250' alt=''>";
+                    "' width='250' alt=''><br>" +
+                    "<form method='POST' action='" + routedelete + "'>" +
+                    '@csrf' + '@method('DELETE')' +
+                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Tenan Meh Dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "</form>";
+
                 layer.on({
                     click: function(e) {
                         polyline.bindPopup(popupContent);
@@ -295,6 +307,7 @@
                     },
                 });
             },
+
         });
 
         $.getJSON("{{ route('api.polylines') }}", function(data) {
@@ -314,12 +327,19 @@
                 };
             },
             onEachFeature: function(feature, layer) {
+                var routedelete = "{{ route('polygons.destroy', ':id') }}";
+                routedelete = routedelete.replace(':id', feature.properties.id);
+
                 var popupContent = "Nama: " + feature.properties.name + "<br>" +
                     "Deskripsi: " + feature.properties.description + "<br>" +
-                    "Luas: " + feature.properties.area_m2 + "meter<br>" +
+                    "Luas: " + feature.properties.area_m2 + " meter<br>" +
                     "Dibuat: " + feature.properties.created_at + "<br>" +
                     "<img src='{{ asset('storage/images/') }}/" + feature.properties.image +
-                    "' width='250' alt=''>";
+                    "' width='250' alt=''><br>" +
+                    "<form method='POST' action='" + routedelete + "'>" +
+                    '@csrf' + '@method('DELETE')' +
+                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Tenan Meh Dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "</form>"; 
 
                 layer.on({
                     click: function(e) {
@@ -330,6 +350,7 @@
                     },
                 });
             },
+
         });
 
         $.getJSON("{{ route('api.polygons') }}", function(data) {
