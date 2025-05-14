@@ -102,7 +102,11 @@ class PointsController extends Controller
      */
     public function edit(string $id)
     {
-        // You can implement this if needed.
+        $data = [
+            'title' => 'Edit Point',
+            'id' => $id,
+        ];
+        return view('edit-point', $data);
     }
 
     /**
