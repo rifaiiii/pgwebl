@@ -7,72 +7,30 @@
             <tr>
                 <th>No</th>
                 <th>Name</th>
-                <th>Position</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Updated</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
-            <!-- Goalkeeper -->
-            <tr>
-                <td>1</td>
-                <td>Marc-André ter Stegen</td>
-                <td>Goalkeeper</td>
-            </tr>
+           // $loop points data
+           @foreach ($points as $p)
+           <tr>
+            <td>{{ $p->id}}</td>
+            <td>{{ $p->Name}}</td>
+            <td>{{ $p->Description}}
 
-            <!-- Defenders -->
-            <tr>
-                <td>2</td>
-                <td>Ronald Araujo</td>
-                <td>Defender</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Andreas Christensen</td>
-                <td>Defender</td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Jules Koundé</td>
-                <td>Defender</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>Iñigo Martínez</td>
-                <td>Defender</td>
-            </tr>
+            </td>
 
-            <!-- Midfielders -->
-            <tr>
-                <td>6</td>
-                <td>Frenkie de Jong</td>
-                <td>Midfielder</td>
-            </tr>
-            <tr>
-                <td>7</td>
-                <td>Gavi</td>
-                <td>Midfielder</td>
-            </tr>
-            <tr>
-                <td>8</td>
-                <td>Pedri</td>
-                <td>Midfielder</td>
-            </tr>
+                <img src="{{ asset('storage/'image/' . $p->image) }}" alt=""
+                width="200" title=" {{ $p->image }}";
+            <td>{{ $p->Image}}</td>
+            <td>{{ $p->Created_at }}</td>
+            <td>{{ $p->Updated_at }}</td>
+           @endforeach
 
-            <!-- Forwards -->
-            <tr>
-                <td>9</td>
-                <td>Robert Lewandowski</td>
-                <td>Forward</td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td>Raphinha</td>
-                <td>Forward</td>
-            </tr>
-            <tr>
-                <td>11</td>
-                <td>Ferran Torres</td>
-                <td>Forward</td>
-            </tr>
+           @endfor
         </tbody>
     </table>
 </div>

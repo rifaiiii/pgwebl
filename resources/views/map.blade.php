@@ -259,7 +259,7 @@
                     "<div class='col-6 text-center'>" +
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
-                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Tenan Meh Dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
                     "</form>" +
                     "</div>" +
                     "</div>";
@@ -311,7 +311,7 @@
                         "<div class='col-6 text-center'>" +
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
-                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Tenan Meh Dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
                     "</form>"+
                     "</div>" +
                     "</div>";
@@ -365,7 +365,7 @@
                         "<div class='col-6 text-center'>" +
                     "<form method='POST' action='" + routedelete + "'>" +
                     '@csrf' + '@method('DELETE')' +
-                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`Tenan Meh Dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
+                    "<button type='submit' class='btn btn-sm btn-danger' onclick='return confirm(`yakin akan dihapus?`)'><i class='fa-solid fa-trash-can'></i></button>" +
                     "</form>"+
                     "</div>" +
                     "</div>";
